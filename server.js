@@ -11,9 +11,7 @@ require("./src/javascript/routes").forEach( route => {
 
 
 app.get('/', (req, res) => {
-	res.send('HOMEPAGE')
+	res.sendStatus(200)
 });
 
-app.listen(config.service.port, () => {
-	console.log(`fastexter service for ukr language starts on port ${config.service.port} in ${config.service.mode} mode.`);
-});
+module.exports = app
