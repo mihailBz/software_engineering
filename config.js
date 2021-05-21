@@ -2,7 +2,7 @@ const path = require("path")
 
 module.exports = {
 	service: {
-		lang: "ukr",
+		lang: "uk",
 		mode: process.env.NODE_ENV || "development",
 		port: process.env.PORT || 3001,
 		host: process.env.HOST || "localhost"
@@ -13,6 +13,7 @@ module.exports = {
 		encoding: 'utf8',
 		pythonOptions: ['-u'],
 		scriptPath: __dirname + '/src/python/',
-		pythonPath: 'python'
+		pythonPath: 'python',
+		args: [process.env.NODE_ENV || "development"]
 	}
 }

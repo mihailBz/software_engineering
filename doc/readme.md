@@ -301,3 +301,78 @@ out:
 На основі цих функцій і буде створюватися веб-додаток FastTexter
 
 ## Реалізація веб-додатку FastTexter
+
+Серверна частина написана на NodeJS за допомогою бібліотеки Express. Частина, що відповідає за взаємодію з моделями 
+FastText, написана на Python. Особливістю реалізації додатку є можливість двосторонньої взаємодії коду на
+NodeJS та Python. Основна логіка проекту знаходиться у файлі `src/javascript/routes.js`.
+
+### Бібліотека Python-Shell
+Зв'язок між кодом на Python та NodeJS реалізовано за допомогою бібліотеки python-shell для NodeJS. Ця бібліотека працює
+на основі стандартних потоків вводу та виводу, stdin та stdout. Це дозволяє перенаправити дані, отримані сервером, в
+python-скрипт, направивши їх у потік вводу процесу, що відповідає за виконання скрипта.
+
+Існує декілька способів викликати python-скрипт з NodeJS:
+  
+1. Якщо потрібно тільки виконати скрипт без обміну даними. Спочатку задаються параметри інтерпретатору Python, такі як 
+шлях до скрипта, прапори з якими потрібно виконати скрипт тощо. У другій частині скрипту ми отримуємо результат
+   виконання та інформацію про помилки, якщо такі були. В даному випадку ми вже не можемо відправити дані у скрипт після
+   початку його виконання
+``` 
+let {PythonShell} = require('python-shell')
+
+let options = {
+  mode: 'text',
+  pythonPath: 'path/to/python',
+  pythonOptions: ['-u'], // get print results in real-time
+  scriptPath: 'path/to/my/scripts',
+  args: ['value1', 'value2', 'value3']
+};
+
+PythonShell.run('my_script.py', options, function (err, results) {
+  if (err) throw err;
+  // results is an array consisting of messages collected during execution
+  console.log('results: %j', results);
+});
+```
+
+2. Якщо потрібен динамічний обмін даними.
+
+Для відправлення даних використовується функція `send()`.Для завершення взаємодії потрібно закрити з'єднання за допомогою `end()`.
+```
+let {PythonShell} = require('python-shell')
+
+pyshell = new PythonShell('script.py', options)
+pyshell.send('OK').end(function(err){
+    if (err) handleError(err);
+    else doWhatever();
+})
+
+```
+
+Для отримування даних використовується функція `on()`:
+
+```
+pyshell.on('message', function (message) {
+  // received a message sent from the Python script
+  console.log(message);
+});
+```
+
+### Тестування
+
+Тестування виконувалося за допомогою бібліотек jest та supertest.
+
+Кожен тест перевіряє, чи збігаються очікувані та отримані дані для кожного з можливих POST та GET запитів на сервер.
+
+Результат запуску тестів:
+![](test.png)
+
+
+### Демонстрація роботи додатку
+
+![](requests.png)
+
+***
+
+
+

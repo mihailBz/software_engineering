@@ -9,7 +9,7 @@ from gensim.models.fasttext import load_facebook_vectors
 from gensim.test.utils import datapath
 from gensim.models.keyedvectors import KeyedVectors
 
-DEBUG = True
+DEBUG = True if sys.argv[1] == 'development' else False
 
 if not DEBUG:
 	cap_path = datapath('/home/mihail/fasttexter/software_engineering/models/ft_model.bin')
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	for line in input_stream:
 		input_json = json.loads(line)
 		method = input_json['method']
-		output = {'request': input_json, 'response': 'RESPONSE FROM PYTHON'}
+		output = {'request': input_json}
 		if method != 'calculate_words':
 			text = input_json['params']['text']
 			if method == 'get_synonyms':

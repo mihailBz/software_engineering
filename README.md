@@ -1,12 +1,31 @@
-# software_engineering_template
+# FastTexter
 
-Шаблон репозиторію для виконання курсової роботи з курсу "Інженерія ПЗ"
-
-*Необхідно зробити ```fork``` цього репозіторію, склонувати вже власний репозіторій та розміщувати матеріали у відповідних діректоріях. 
-В цьому файлі необхідно вказати назву проекту (тему курсової роботи). Коротку загальну характеристику
-проекту, контактні дані виконавців.*
+## Налаштування проекту
 
 
-[Методичні вказівки](https://jace-dev.herokuapp.com/design/js-talks#/)
+Клонування репозиторію
+```
+git clone https://github.com/mihailBz/software_engineering.git
+cd software_engineering
+```
 
-[Звітність](https://drive.google.com/file/d/1A5Pxqb0Esy78t9xhMlkWzzx4chdkXAl2/view?usp=sharing)
+Завантаження моделі FastText
+```
+curl -o ./models/ft_model.vec.gz https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.uk.300.vec.gz
+```
+
+Встановлення залежностей NodeJS
+
+`npm install`
+
+Встановлення залежностей Python та налаштування віртуального середовища
+```
+python3 -m venv ftvenv
+. ./ftvenv/bin/activate
+pip install -r requirements.txt
+```
+Запуск серверу
+
+`node start.js`
+
+
